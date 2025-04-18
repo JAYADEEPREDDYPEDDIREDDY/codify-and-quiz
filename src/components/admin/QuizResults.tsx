@@ -2,12 +2,13 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useQuiz } from "@/context/QuizContext";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const QuizResults = () => {
   const { quizzes, getQuizResults } = useQuiz();
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 w-full">
       {quizzes.length === 0 ? (
         <div className="text-center py-12 text-muted-foreground">
           <p>No quizzes available yet.</p>
@@ -16,7 +17,7 @@ const QuizResults = () => {
         quizzes.map((quiz) => {
           const quizResults = getQuizResults(quiz.id);
           return (
-            <Card key={quiz.id}>
+            <Card key={quiz.id} className="w-full">
               <CardHeader>
                 <CardTitle className="text-xl">{quiz.title}</CardTitle>
                 <CardDescription>
@@ -27,7 +28,7 @@ const QuizResults = () => {
                 {quizResults.length === 0 ? (
                   <p className="text-muted-foreground">No results available for this quiz yet.</p>
                 ) : (
-                  <div className="rounded-lg border">
+                  <div className="rounded-lg border w-full">
                     <Table>
                       <TableHeader>
                         <TableRow>

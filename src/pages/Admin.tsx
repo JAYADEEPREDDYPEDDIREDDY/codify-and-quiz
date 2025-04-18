@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import Layout from "@/components/Layout";
@@ -12,13 +12,13 @@ import QuizResults from "@/components/admin/QuizResults";
 
 const AdminPage: React.FC = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, isLoading } = useAuth();
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState("quizzes");
 
   // Redirect if not admin
-  React.useEffect(() => {
-    if (user && user.role !== "admin") {
+  useEffect(() => {
+    if (!isLoading && user && user.role !== "admin") {
       toast({
         variant: "destructive",
         title: "Access Denied",
@@ -26,9 +26,10 @@ const AdminPage: React.FC = () => {
       });
       navigate("/dashboard");
     }
-  }, [user, navigate, toast]);
+  }, [user, isLoading, navigate, toast]);
 
-  if (!user) {
+  // Show loading state while checking auth
+  if (isLoading) {
     return (
       <Layout>
         <div className="flex items-center justify-center h-[50vh]">
@@ -38,7 +39,8 @@ const AdminPage: React.FC = () => {
     );
   }
 
-  if (user.role !== "admin") {
+  // If no user or not admin after loading completes, don't render content
+  if (!user || user.role !== "admin") {
     return null;
   }
 
@@ -62,7 +64,7 @@ const AdminPage: React.FC = () => {
           </Button>
         </div>
 
-        <Tabs value={activeTab} onValueChange={setActiveTab}>
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full grid-cols-2 max-w-md">
             <TabsTrigger value="quizzes">
               <List className="mr-2 h-4 w-4" />

@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Edit, Trash } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useQuiz } from "@/context/QuizContext";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const QuizList = () => {
   const navigate = useNavigate();
@@ -26,7 +27,7 @@ const QuizList = () => {
   };
 
   return (
-    <div className="rounded-lg border">
+    <div className="rounded-lg border w-full">
       <Table>
         <TableHeader>
           <TableRow>
