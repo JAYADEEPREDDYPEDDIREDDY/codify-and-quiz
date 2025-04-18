@@ -28,7 +28,17 @@ const AdminPage: React.FC = () => {
     }
   }, [user, navigate, toast]);
 
-  if (!user || user.role !== "admin") {
+  if (!user) {
+    return (
+      <Layout>
+        <div className="flex items-center justify-center h-[50vh]">
+          <p className="text-muted-foreground">Loading...</p>
+        </div>
+      </Layout>
+    );
+  }
+
+  if (user.role !== "admin") {
     return null;
   }
 
